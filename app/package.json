@@ -1,0 +1,9 @@
+{
+  "name": "revhunter-leve",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Cliente leve (PWA) para os servidores do Rev Hunter. Sem dependências.",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
