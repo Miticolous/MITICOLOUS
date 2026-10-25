@@ -18,7 +18,10 @@ Para usar no celular, sirva com HTTPS (ex.: Cloudflare Tunnel, ngrok ou qualquer
 
 ## Configurar seus servidores
 
-Edite `www/servers.json` com a lista extraída do APK (ou a sua própria):
+Duas formas:
+
+1. **Pelo próprio app** (recomendado): use o cartão "Adicionar servidor" e preencha host, porta, protocolo e UUID/senha. Os servidores adicionados ficam salvos no navegador (`localStorage`) e podem ser removidos no `×`.
+2. **Lista fixa**: edite `www/servers.json` com a lista extraída do APK (ou a sua própria):
 
 ```json
 [
@@ -44,7 +47,14 @@ Campos: `name`, `flag` (código do país, 2 letras), `host`, `port`, `protocol` 
 - Lista os servidores com latência (teste best-effort).
 - Testa a conexão via WebSocket (`wss://host:port/wsPath`).
 - Exporta a configuração no formato `vless://...` (copia para a área de transferência) para importar em clientes como v2rayNG, Shadowrocket, etc.
+- Adiciona e remove servidores pela interface, com persistência local.
 - Funciona offline como PWA instalado (service worker com cache).
+
+## Sobre a lista de servidores do APK
+
+A análise completa está em [`docs/ANALISE_APK.md`](docs/ANALISE_APK.md). Resumo: o `assets/config/config.json` original está protegido em camadas (Base64 → Base91 customizado → container `TSH1` → PBKDF2 → cifra customizada → etapa nativa LIAPP → GZIP). Executamos o próprio código do APK até a chamada nativa, mas a última etapa roda em código ARM64 registrado via JNI, então a extração estática não foi possível neste ambiente.
+
+Para popular o app com seus servidores, use uma das opções: exportar o JSON do painel (chave `Servers`), ler o cache do app em um aparelho onde ele já rodou (`SharedPreferences "RevHunterGERAL"`, chave `json`) ou adicionar manualmente na tela "Adicionar servidor".
 
 ## Limitações importantes
 
